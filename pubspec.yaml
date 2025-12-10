@@ -1,33 +1,22 @@
 name: life_planner_app
-description: "Um aplicativo completo de organização de vida e rotina com widgets, to-do list, diário, controle financeiro, metas, compromissos com alarmes e tarefas agendadas."
+description: "Um aplicativo completo de organização de vida e rotina."
 publish_to: 'none'
 
 version: 1.0.0+1
 
 environment:
-  sdk: "^3.5.0"
+  sdk: "^3.0.0"
 
   dependencies:
     flutter:
         sdk: flutter
-          cupertino_icons: ^1.0.8
-            sqflite: ^2.3.0
-              path: ^1.8.3
-                path_provider: ^2.1.1
-                  flutter_local_notifications: ^17.0.0
-                    timezone: ^0.9.2
-                      home_widget: ^0.4.0
-                        table_calendar: ^3.0.9
-                          file_picker: ^6.2.1
-                            device_info_plus: ^9.1.2
-                              syncfusion_flutter_pdfviewer: ^25.2.7
-                                url_launcher: ^6.2.6
+          cupertino_icons: ^1.0.2
 
-                                dev_dependencies:
-                                  flutter_test:
-                                      sdk: flutter
-                                        flutter_lints: ^3.0.0
+          dev_dependencies:
+            flutter_test:
+                sdk: flutter
+                  flutter_lints: ^2.0.0
 
-                                        flutter:
-                                          uses-material-design: true
-                                          
+                  flutter:
+                    uses-material-design: true
+                    
