@@ -1,0 +1,30 @@
+workflows:
+  apkcalendar:
+    name: APK Calendar Build
+    environment:
+      flutter: 3.16.9
+      xcode: latest
+      cocoapods: default
+    triggering:
+      events:
+        - push
+        - pull_request
+      branch:
+        include:
+          - main
+    scripts:
+      - name: Get Flutter dependencies
+        script: |
+          flutter pub get
+      - name: Build APK
+        script: |
+          flutter build apk --release --no-shrink
+    artifacts:
+      - build/app/outputs/flutter-apk/app-release.apk
+    publishing:
+      email:
+        recipients:
+          - alan12maio@gmail.com
+        notify:
+          success: true
+          failure: true
