@@ -1,14 +1,27 @@
 name: life_planner_app
-description: Um aplicativo de organização de vida e rotina.
+description: Um aplicativo de organização de vida e rotina com funcionalidades completas de planejamento, metas, diário e controle financeiro.
 publish_to: none
 version: 1.0.0+1
+
 environment:
   sdk: ">=3.0.0 <4.0.0"
+
 dependencies:
   flutter:
     sdk: flutter
+  cupertino_icons: ^1.0.2
+  sqflite: ^2.3.0
+  path: ^1.8.3
+  intl: ^0.19.0
+  table_calendar: ^3.0.9
+  flutter_local_notifications: ^16.1.0
+  timezone: ^0.9.2
+  shared_preferences: ^2.2.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints: ^3.0.0
+
 flutter:
   uses-material-design: true
