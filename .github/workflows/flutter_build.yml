@@ -29,7 +29,10 @@ jobs:
         with:
           flutter-version: '3.13.9'
           channel: 'stable'
-          cache: true
+          cache: false
+
+      - name: Clean Flutter cache
+        run: flutter clean && flutter pub cache clean --force
 
       - name: Get dependencies
         run: flutter pub get
