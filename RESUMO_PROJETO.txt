@@ -1,0 +1,296 @@
+================================================================================
+                    LIFE PLANNER - RESUMO DO PROJETO
+================================================================================
+
+APLICATIVO ANDROID COMPLETO DE ORGANIZAÇÃO DE VIDA E ROTINA
+Desenvolvido com Flutter 3.24.0
+
+================================================================================
+                         FUNCIONALIDADES IMPLEMENTADAS
+================================================================================
+
+✅ TO-DO LIST
+   - Criar, editar e deletar tarefas
+   - Marcar tarefas como completas
+   - Visualizar progresso diário em tempo real
+   - Data de vencimento personalizadas
+
+✅ DIÁRIO DE ANOTAÇÕES
+   - Escrever anotações com título e conteúdo
+   - Adicionar tags para organizar
+   - Editar e deletar entradas
+   - Histórico completo de anotações
+
+✅ METAS E OBJETIVOS
+   - Criar metas por categoria
+   - Acompanhar progresso (0-100%)
+   - Categorias: Leitura, Exercício, Aprendizado, Saúde, Carreira, Pessoal
+   - Marcar metas como completas
+
+✅ COMPROMISSOS COM ALARMES
+   - Agendar compromissos com data e hora
+   - Configurar lembretes automáticos (5, 10, 15, 30, 60 minutos)
+   - Notificações do sistema
+   - Descrição e detalhes opcionais
+
+✅ CONTROLE FINANCEIRO
+   - Registrar receitas e despesas
+   - Categorizar transações
+   - Visualizar saldo mensal
+   - Análise de gastos por categoria
+
+✅ TAREFAS AGENDADAS COM CALENDÁRIO
+   - Calendário interativo
+   - Tarefas recorrentes (diária, semanal, mensal)
+   - Alarmes personalizados
+   - Visualização por data
+
+✅ ACOMPANHAMENTO DIÁRIO
+   - Registrar conclusão de tarefas
+   - Acompanhar progresso de metas
+   - Registrar humor (😊 😐 😢)
+   - Estatísticas dos últimos 30 dias
+
+✅ DESIGN EM TONS PASTÉIS
+   - Cores harmoniosas e relaxantes
+   - Interface intuitiva
+   - Ícones Material Design
+   - Responsivo para diferentes tamanhos de tela
+
+✅ BANCO DE DADOS LOCAL
+   - SQLite para persistência de dados
+   - Sem necessidade de conexão com internet
+   - Backup manual possível
+
+✅ NOTIFICAÇÕES E ALARMES
+   - Notificações locais agendadas
+   - Lembretes automáticos
+   - Suporte a fusos horários
+
+================================================================================
+                            ESTRUTURA DO PROJETO
+================================================================================
+
+life_planner_app/
+├── lib/
+│   ├── main.dart                          # Ponto de entrada da aplicação
+│   ├── theme/
+│   │   └── app_theme.dart                 # Tema em tons pastéis
+│   ├── models/
+│   │   └── models.dart                    # 7 modelos de dados
+│   ├── database/
+│   │   └── database_helper.dart           # Gerenciamento SQLite
+│   ├── services/
+│   │   └── notification_service.dart      # Notificações e alarmes
+│   └── screens/ (8 telas)
+│       ├── home_screen.dart               # Tela inicial
+│       ├── todo_screen.dart               # To-Do List
+│       ├── diary_screen.dart              # Diário
+│       ├── goals_screen.dart              # Metas
+│       ├── appointments_screen.dart       # Compromissos
+│       ├── financial_screen.dart          # Controle Financeiro
+│       ├── scheduled_tasks_screen.dart    # Tarefas Agendadas
+│       └── progress_screen.dart           # Acompanhamento Diário
+├── android/                               # Configuração Android
+├── pubspec.yaml                           # 15+ dependências
+├── GUIA_INSTALACAO.md                     # Instruções detalhadas
+├── README.md                              # Documentação
+└── RESUMO_PROJETO.txt                     # Este arquivo
+
+================================================================================
+                         MODELOS DE DADOS IMPLEMENTADOS
+================================================================================
+
+1. TodoTask
+   - id, title, description, dueDate, isCompleted, createdAt
+
+2. DiaryEntry
+   - id, title, content, date, tags
+
+3. Goal
+   - id, title, description, category, createdAt, targetDate, isCompleted, progress
+
+4. Appointment
+   - id, title, description, dateTime, duration, hasNotification, notificationMinutesBefore
+
+5. FinancialTransaction
+   - id, description, amount, category, subcategory, date, notes
+
+6. ScheduledTask
+   - id, title, description, startDate, endDate, isRecurring, recurrencePattern, hasAlarm, alarmTime
+
+7. DailyProgress
+   - id, date, tasksCompleted, totalTasks, goalsProgress, financialBalance, mood
+
+================================================================================
+                           DEPENDÊNCIAS UTILIZADAS
+================================================================================
+
+- sqflite: ^2.3.0                          # Banco de dados SQLite
+- path: ^1.8.3                             # Gerenciamento de caminhos
+- path_provider: ^2.1.1                    # Diretórios do sistema
+- flutter_local_notifications: ^17.0.0     # Notificações locais
+- timezone: ^0.9.2                         # Fusos horários
+- home_widget: ^0.4.0                      # Widgets na tela inicial
+- table_calendar: ^3.0.9                   # Calendário interativo
+- file_picker: ^6.1.1                      # Seleção de arquivos
+- syncfusion_flutter_pdfviewer: ^25.1.35   # Visualizador de PDF
+- fl_chart: ^0.65.0                        # Gráficos
+- intl: ^0.19.0                            # Internacionalização
+- provider: ^6.1.0                         # Gerenciamento de estado
+- font_awesome_flutter: ^10.7.0            # Ícones adicionais
+
+================================================================================
+                         COMO COMPILAR E INSTALAR
+================================================================================
+
+OPÇÃO 1: No Windows
+-------------------
+1. Instale Flutter: https://flutter.dev/docs/get-started/install
+2. Instale Android Studio: https://developer.android.com/studio
+3. Configure variáveis de ambiente (ANDROID_HOME, PATH)
+4. Execute:
+   flutter pub get
+   flutter build apk --release
+5. Instale no celular:
+   flutter install
+
+OPÇÃO 2: No macOS
+-----------------
+1. Instale Flutter via Homebrew:
+   brew install flutter
+2. Instale Android SDK
+3. Execute:
+   flutter pub get
+   flutter build apk --release
+4. Instale no celular:
+   flutter install
+
+OPÇÃO 3: No Linux
+-----------------
+1. Clone o Flutter:
+   git clone https://github.com/flutter/flutter.git -b stable
+2. Instale Android SDK
+3. Execute:
+   flutter pub get
+   flutter build apk --release
+4. Instale no celular:
+   flutter install
+
+ARQUIVO APK GERADO:
+   build/app/outputs/flutter-apk/app-release.apk
+
+================================================================================
+                         CORES DO TEMA (TONS PASTÉIS)
+================================================================================
+
+Primária:       #B4A7D6 (Roxo Pastel)
+Secundária:     #FFB4D6 (Rosa Pastel)
+Acentuação:     #A8D8EA (Azul Pastel)
+Sucesso:        #A8E6CF (Verde Pastel)
+Aviso:          #FFD3B6 (Laranja Pastel)
+Erro:           #FFAFAF (Vermelho Pastel)
+Fundo:          #FAF9F6 (Branco Quente)
+Superfície:     #FFFFFF (Branco)
+
+================================================================================
+                         REQUISITOS DO SISTEMA
+================================================================================
+
+PARA COMPILAR:
+- Flutter 3.24.0 ou superior
+- Dart 3.5.0 ou superior
+- Android SDK API 21 ou superior
+- Java Development Kit (JDK) 11 ou superior
+- Gradle 7.0 ou superior
+
+PARA EXECUTAR:
+- Android 5.0 (API 21) ou superior
+- Mínimo 2GB de RAM
+- Aproximadamente 50MB de espaço de armazenamento
+
+================================================================================
+                         PERMISSÕES DO ANDROID
+================================================================================
+
+O aplicativo requer as seguintes permissões:
+
+- android.permission.POST_NOTIFICATIONS
+  Necessário para enviar notificações
+
+- android.permission.SCHEDULE_EXACT_ALARM
+  Necessário para agendar alarmes precisos
+
+- android.permission.READ_EXTERNAL_STORAGE
+  Necessário para acessar arquivos (ebooks)
+
+Todas as permissões são configuradas automaticamente no AndroidManifest.xml
+
+================================================================================
+                         DICAS DE USO
+================================================================================
+
+1. PRIMEIRA EXECUÇÃO
+   - Todas as funcionalidades estão disponíveis na tela inicial
+   - Clique nos cards para acessar cada funcionalidade
+
+2. NOTIFICAÇÕES
+   - Certifique-se de que as notificações estão habilitadas
+   - Vá em Configurações > Aplicativos > Life Planner > Notificações
+
+3. ALARMES
+   - Os alarmes funcionam mesmo com o aplicativo fechado
+   - Verifique se o dispositivo não está em modo de economia de bateria
+
+4. BACKUP DE DADOS
+   - Os dados são armazenados localmente no SQLite
+   - Faça backup regularmente copiando a pasta do banco de dados
+
+5. WIDGETS
+   - Para adicionar widgets, mantenha pressionado na tela inicial
+   - Selecione "Life Planner" e escolha o widget desejado
+
+================================================================================
+                         SOLUÇÃO DE PROBLEMAS
+================================================================================
+
+PROBLEMA: "No Android SDK found"
+SOLUÇÃO: Configure a variável ANDROID_HOME apontando para o SDK
+
+PROBLEMA: Notificações não aparecem
+SOLUÇÃO: Habilite as notificações nas configurações do Android
+
+PROBLEMA: Alarmes não tocam
+SOLUÇÃO: Verifique se o dispositivo não está em modo silencioso
+
+PROBLEMA: Dados não são salvos
+SOLUÇÃO: Verifique permissões de armazenamento
+
+PROBLEMA: Erro ao compilar
+SOLUÇÃO: Execute "flutter clean" e tente novamente
+
+================================================================================
+                         PRÓXIMOS PASSOS
+================================================================================
+
+1. Copie a pasta "life_planner_app" para seu computador
+2. Abra um terminal/prompt de comando na pasta do projeto
+3. Execute: flutter pub get
+4. Execute: flutter build apk --release
+5. Instale o APK no seu celular
+6. Aproveite o Life Planner!
+
+Para mais informações, consulte GUIA_INSTALACAO.md
+
+================================================================================
+                         INFORMAÇÕES ADICIONAIS
+================================================================================
+
+Versão: 1.0.0
+Desenvolvido com: Flutter 3.24.0 + Dart 3.5.0
+Última Atualização: Dezembro 2025
+Licença: Uso Pessoal
+
+Desenvolvido com ❤️ para organizar sua vida e rotina!
+
+================================================================================
