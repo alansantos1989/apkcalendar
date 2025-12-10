@@ -2,7 +2,7 @@ workflows:
   apkcalendar:
     name: APK Calendar Build
     environment:
-      flutter: 3.16.9
+      flutter: 3.13.9
       xcode: latest
       cocoapods: default
     triggering:
@@ -16,9 +16,9 @@ workflows:
       - name: Get Flutter dependencies
         script: |
           flutter pub get
-      - name: Build APK
+      - name: Build APK Release
         script: |
-          flutter build apk --release --no-shrink
+          flutter build apk --release --no-shrink --no-tree-shake-icons
     artifacts:
       - build/app/outputs/flutter-apk/app-release.apk
     publishing:
