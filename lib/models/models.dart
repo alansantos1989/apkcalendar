@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 // Modelo para To-Do
 class TodoTask {
   final int? id;
@@ -127,6 +129,28 @@ class Goal {
       'isCompleted': isCompleted ? 1 : 0,
       'progress': progress,
     };
+  }
+
+  Goal copyWith({
+    int? id,
+    String? title,
+    String? description,
+    String? category,
+    DateTime? createdAt,
+    DateTime? targetDate,
+    bool? isCompleted,
+    int? progress,
+  }) {
+    return Goal(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      category: category ?? this.category,
+      createdAt: createdAt ?? this.createdAt,
+      targetDate: targetDate ?? this.targetDate,
+      isCompleted: isCompleted ?? this.isCompleted,
+      progress: progress ?? this.progress,
+    );
   }
 
   factory Goal.fromMap(Map<String, dynamic> map) {
