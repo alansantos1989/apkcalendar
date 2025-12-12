@@ -94,6 +94,22 @@ class DiaryEntry {
       tags: (map['tags'] as String?)?.split(',').where((t) => t.isNotEmpty).toList(),
     );
   }
+
+  DiaryEntry copyWith({
+    int? id,
+    String? title,
+    String? content,
+    DateTime? date,
+    List<String>? tags,
+  }) {
+    return DiaryEntry(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      content: content ?? this.content,
+      date: date ?? this.date,
+      tags: tags ?? this.tags,
+    );
+  }
 }
 
 // Modelo para Meta
@@ -210,6 +226,26 @@ class Appointment {
       notificationMinutesBefore: map['notificationMinutesBefore'] ?? 15,
     );
   }
+
+  Appointment copyWith({
+    int? id,
+    String? title,
+    String? description,
+    DateTime? dateTime,
+    Duration? duration,
+    bool? hasNotification,
+    int? notificationMinutesBefore,
+  }) {
+    return Appointment(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      dateTime: dateTime ?? this.dateTime,
+      duration: duration ?? this.duration,
+      hasNotification: hasNotification ?? this.hasNotification,
+      notificationMinutesBefore: notificationMinutesBefore ?? this.notificationMinutesBefore,
+    );
+  }
 }
 
 // Modelo para Transação Financeira
@@ -253,6 +289,26 @@ class FinancialTransaction {
       subcategory: map['subcategory'],
       date: DateTime.parse(map['date']),
       notes: map['notes'],
+    );
+  }
+
+  FinancialTransaction copyWith({
+    int? id,
+    String? description,
+    double? amount,
+    String? category,
+    String? subcategory,
+    DateTime? date,
+    String? notes,
+  }) {
+    return FinancialTransaction(
+      id: id ?? this.id,
+      description: description ?? this.description,
+      amount: amount ?? this.amount,
+      category: category ?? this.category,
+      subcategory: subcategory ?? this.subcategory,
+      date: date ?? this.date,
+      notes: notes ?? this.notes,
     );
   }
 }
@@ -314,6 +370,30 @@ class ScheduledTask {
       alarmTime: alarmTime,
     );
   }
+
+  ScheduledTask copyWith({
+    int? id,
+    String? title,
+    String? description,
+    DateTime? startDate,
+    DateTime? endDate,
+    bool? isRecurring,
+    String? recurrencePattern,
+    bool? hasAlarm,
+    TimeOfDay? alarmTime,
+  }) {
+    return ScheduledTask(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      startDate: startDate ?? this.startDate,
+      endDate: endDate ?? this.endDate,
+      isRecurring: isRecurring ?? this.isRecurring,
+      recurrencePattern: recurrencePattern ?? this.recurrencePattern,
+      hasAlarm: hasAlarm ?? this.hasAlarm,
+      alarmTime: alarmTime ?? this.alarmTime,
+    );
+  }
 }
 
 // Modelo para Acompanhamento Diário
@@ -357,6 +437,26 @@ class DailyProgress {
       goalsProgress: map['goalsProgress'] ?? 0,
       financialBalance: map['financialBalance'] ?? 0,
       mood: map['mood'] ?? 'neutral',
+    );
+  }
+
+  DailyProgress copyWith({
+    int? id,
+    DateTime? date,
+    int? tasksCompleted,
+    int? totalTasks,
+    int? goalsProgress,
+    double? financialBalance,
+    String? mood,
+  }) {
+    return DailyProgress(
+      id: id ?? this.id,
+      date: date ?? this.date,
+      tasksCompleted: tasksCompleted ?? this.tasksCompleted,
+      totalTasks: totalTasks ?? this.totalTasks,
+      goalsProgress: goalsProgress ?? this.goalsProgress,
+      financialBalance: financialBalance ?? this.financialBalance,
+      mood: mood ?? this.mood,
     );
   }
 }
