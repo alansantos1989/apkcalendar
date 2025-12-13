@@ -68,15 +68,6 @@ class NotificationService {
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.requestNotificationsPermission();
-
-    await _notificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            DarwinFlutterLocalNotificationsPlugin>()
-        ?.requestPermissions(
-          alert: true,
-          badge: true,
-          sound: true,
-        );
   }
 
   Future<void> showNotification({
