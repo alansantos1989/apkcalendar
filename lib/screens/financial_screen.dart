@@ -55,6 +55,20 @@ class _FinancialScreenState extends State<FinancialScreen> {
     _loadTransactions();
   }
 
+  void _registerPaidExpense(RecurringExpense expense) async {
+    // Registrar a despesa paga como transação financeira
+    final transaction = FinancialTransaction(
+      description: expense.name,
+      amount: expense.amount,
+      category: 'Despesa',
+      subcategory: 'Gasto Fixo',
+      date: expense.paidDate ?? DateTime.now(),
+      notes: expense.description.isNotEmpty ? expense.description : null,
+    );
+    await _db.insertTransaction(transaction);
+    _loadTransactions();
+  }
+
   void _previousMonth() {
     setState(() {
       _selectedMonth = DateTime(

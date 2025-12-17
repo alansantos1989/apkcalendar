@@ -136,17 +136,27 @@ class NotificationService {
       iOS: iosDetails,
     );
 
-    await _notificationsPlugin.zonedSchedule(
-      id,
-      title,
-      body,
-      tz.TZDateTime.from(scheduledTime, tz.local),
-      notificationDetails,
-      androidScheduleMode: AndroidScheduleMode.exact,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-      payload: payload,
-    );
+    try {
+      await _notificationsPlugin.zonedSchedule(
+        id,
+        title,
+        body,
+        tz.TZDateTime.from(scheduledTime, tz.local),
+        notificationDetails,
+        androidScheduleMode: AndroidScheduleMode.inexactAndAllowWhileIdle,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        payload: payload,
+      );
+    } catch (e) {
+      // Fallback: mostrar notificação imediata se agendamento falhar
+      await showNotification(
+        id: id,
+        title: title,
+        body: body,
+        payload: payload,
+      );
+    }
   }
 
   Future<void> cancelNotification(int id) async {

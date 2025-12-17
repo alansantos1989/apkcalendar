@@ -154,14 +154,15 @@ class _ScheduledTasksScreenState extends State<ScheduledTasksScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
                     children: List.generate(
-                      tasks.length,
+                      tasks
+                          .where((task) => isSameDay(task.startDate, _selectedDate))
+                          .length,
                       (index) {
-                        final task = tasks[index];
-                        final isToday = isSameDay(task.startDate, _selectedDate);
-                        final isUpcoming =
-                            task.startDate.isAfter(_selectedDate) &&
-                                task.startDate
-                                    .isBefore(_selectedDate.add(const Duration(days: 7)));
+                        final filteredTasks = tasks
+                            .where((task) => isSameDay(task.startDate, _selectedDate))
+                            .toList();
+                        final task = filteredTasks[index];
+                        final isToday = true;
 
                         return Card(
                           margin: const EdgeInsets.only(bottom: 12),

@@ -417,4 +417,46 @@ class DatabaseHelper {
       whereArgs: [DateTime(progress.date.year, progress.date.month, progress.date.day).toIso8601String()],
     );
   }
+
+  // ===== RECURRING EXPENSE OPERATIONS =====
+  Future<int> insertRecurringExpense(RecurringExpense expense) async {
+    final db = await database;
+    return await db.insert(recurringExpenseTable, expense.toMap());
+  }
+
+  Future<List<RecurringExpense>> getRecurringExpenses() async {
+    final db = await database;
+    final maps = await db.query(recurringExpenseTable, orderBy: 'dayOfMonth ASC');
+    return List.generate(maps.length, (i) => RecurringExpense.fromMap(maps[i]));
+  }
+
+  Future<List<RecurringExpense>> getUnpaidRecurringExpenses() async {
+    final db = await database;
+    final maps = await db.query(
+      recurringExpenseTable,
+      where: 'isPaid = ?',
+      whereArgs: [0],
+      orderBy: 'dayOfMonth ASC',
+    );
+    return List.generate(maps.length, (i) => RecurringExpense.fromMap(maps[i]));
+  }
+
+  Future<int> updateRecurringExpense(RecurringExpense expense) async {
+    final db = await database;
+    return await db.update(
+      recurringExpenseTable,
+      expense.toMap(),
+      where: 'id = ?',
+      whereArgs: [expense.id],
+    );
+  }
+
+  Future<int> deleteRecurringExpense(int id) async {
+    final db = await database;
+    return await db.delete(
+      recurringExpenseTable,
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
 }
