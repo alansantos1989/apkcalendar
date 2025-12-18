@@ -460,3 +460,75 @@ class DailyProgress {
     );
   }
 }
+
+
+// Modelo para Gastos Fixos (Despesas Recorrentes)
+class RecurringExpense {
+  final int? id;
+  final String name;
+  final double amount;
+  final int dayOfMonth;
+  final String description;
+  final bool isPaid;
+  final DateTime? paidDate;
+  final DateTime createdAt;
+
+  RecurringExpense({
+    this.id,
+    required this.name,
+    required this.amount,
+    required this.dayOfMonth,
+    this.description = '',
+    this.isPaid = false,
+    this.paidDate,
+    required this.createdAt,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'amount': amount,
+      'dayOfMonth': dayOfMonth,
+      'description': description,
+      'isPaid': isPaid ? 1 : 0,
+      'paidDate': paidDate?.toIso8601String(),
+      'createdAt': createdAt.toIso8601String(),
+    };
+  }
+
+  factory RecurringExpense.fromMap(Map<String, dynamic> map) {
+    return RecurringExpense(
+      id: map['id'],
+      name: map['name'],
+      amount: map['amount'],
+      dayOfMonth: map['dayOfMonth'],
+      description: map['description'] ?? '',
+      isPaid: map['isPaid'] == 1,
+      paidDate: map['paidDate'] != null ? DateTime.parse(map['paidDate']) : null,
+      createdAt: DateTime.parse(map['createdAt']),
+    );
+  }
+
+  RecurringExpense copyWith({
+    int? id,
+    String? name,
+    double? amount,
+    int? dayOfMonth,
+    String? description,
+    bool? isPaid,
+    DateTime? paidDate,
+    DateTime? createdAt,
+  }) {
+    return RecurringExpense(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      amount: amount ?? this.amount,
+      dayOfMonth: dayOfMonth ?? this.dayOfMonth,
+      description: description ?? this.description,
+      isPaid: isPaid ?? this.isPaid,
+      paidDate: paidDate ?? this.paidDate,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+}
