@@ -143,7 +143,7 @@ class NotificationService {
         body,
         tz.TZDateTime.from(scheduledTime, tz.local),
         notificationDetails,
-        androidScheduleMode: AndroidScheduleMode.inexactAndAllowWhileIdle,
+        androidScheduleMode: AndroidScheduleMode.exact,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
         payload: payload,

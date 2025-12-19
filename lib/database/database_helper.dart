@@ -14,6 +14,7 @@ class DatabaseHelper {
   static const String financialTable = 'financial_transactions';
   static const String scheduledTaskTable = 'scheduled_tasks';
   static const String dailyProgressTable = 'daily_progress';
+  static const String recurringExpenseTable = 'recurring_expenses';
 
   static final DatabaseHelper _instance = DatabaseHelper._internal();
 
