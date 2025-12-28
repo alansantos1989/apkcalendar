@@ -62,7 +62,8 @@ class DatabaseHelper {
         title TEXT NOT NULL,
         content TEXT NOT NULL,
         date TEXT NOT NULL,
-        tags TEXT
+        tags TEXT,
+        mediaPaths TEXT
       )
     ''');
 

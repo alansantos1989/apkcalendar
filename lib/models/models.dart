@@ -66,6 +66,7 @@ class DiaryEntry {
   final String content;
   final DateTime date;
   final List<String>? tags;
+  final List<String>? mediaPaths; // Caminhos de fotos e vídeos
 
   DiaryEntry({
     this.id,
@@ -73,6 +74,7 @@ class DiaryEntry {
     required this.content,
     required this.date,
     this.tags,
+    this.mediaPaths,
   });
 
   Map<String, dynamic> toMap() {
@@ -82,6 +84,7 @@ class DiaryEntry {
       'content': content,
       'date': date.toIso8601String(),
       'tags': tags?.join(',') ?? '',
+      'mediaPaths': mediaPaths?.join('|') ?? '',
     };
   }
 
@@ -92,6 +95,7 @@ class DiaryEntry {
       content: map['content'],
       date: DateTime.parse(map['date']),
       tags: (map['tags'] as String?)?.split(',').where((t) => t.isNotEmpty).toList(),
+      mediaPaths: (map['mediaPaths'] as String?)?.split('|').where((p) => p.isNotEmpty).toList(),
     );
   }
 
@@ -101,6 +105,7 @@ class DiaryEntry {
     String? content,
     DateTime? date,
     List<String>? tags,
+    List<String>? mediaPaths,
   }) {
     return DiaryEntry(
       id: id ?? this.id,
@@ -108,6 +113,7 @@ class DiaryEntry {
       content: content ?? this.content,
       date: date ?? this.date,
       tags: tags ?? this.tags,
+      mediaPaths: mediaPaths ?? this.mediaPaths,
     );
   }
 }

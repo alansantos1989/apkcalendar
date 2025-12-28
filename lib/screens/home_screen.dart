@@ -29,10 +29,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _loadData() {
-    _todayTodos = _db.getTodosByDate(DateTime.now());
-    _completedTodosCount = _db.getTodosByDate(DateTime.now()).then(
-      (todos) => todos.where((t) => t.isCompleted).length,
-    );
+    setState(() {
+      _todayTodos = _db.getTodosByDate(DateTime.now());
+      _completedTodosCount = _db.getTodosByDate(DateTime.now()).then(
+        (todos) => todos.where((t) => t.isCompleted).length,
+      );
+    });
   }
 
   @override

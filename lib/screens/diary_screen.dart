@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 import '../theme/app_theme.dart';
 import '../models/models.dart';
 import '../database/database_helper.dart';
@@ -30,12 +32,13 @@ class _DiaryScreenState extends State<DiaryScreen> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => _DiaryEditorScreen(
-          onSave: (title, content, tags) async {
+          onSave: (title, content, tags, mediaPaths) async {
             final entry = DiaryEntry(
               title: title,
               content: content,
               date: DateTime.now(),
               tags: tags,
+              mediaPaths: mediaPaths,
             );
             await _db.insertDiaryEntry(entry);
             _loadEntries();
@@ -50,13 +53,14 @@ class _DiaryScreenState extends State<DiaryScreen> {
       MaterialPageRoute(
         builder: (context) => _DiaryEditorScreen(
           entry: entry,
-          onSave: (title, content, tags) async {
+          onSave: (title, content, tags, mediaPaths) async {
             final updated = DiaryEntry(
               id: entry.id,
               title: title,
               content: content,
               date: entry.date,
               tags: tags,
+              mediaPaths: mediaPaths,
             );
             await _db.updateDiaryEntry(updated);
             _loadEntries();
@@ -87,67 +91,26 @@ class _DiaryScreenState extends State<DiaryScreen> {
 
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.book_outlined,
-                    size: 64,
-                    color: AppTheme.secondaryPastel.withOpacity(0.5),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Nenhuma entrada',
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Comece a escrever suas anotações',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ],
+              child: Text(
+                'Nenhuma entrada no diário',
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
             );
           }
 
           final entries = snapshot.data!;
           return ListView.builder(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(12),
             itemCount: entries.length,
             itemBuilder: (context, index) {
               final entry = entries[index];
               return Card(
                 margin: const EdgeInsets.only(bottom: 12),
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Column(
+                child: ListTile(
+                  title: Text(entry.title),
+                  subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              entry.title,
-                              style: Theme.of(context).textTheme.titleLarge,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          PopupMenuButton(
-                            itemBuilder: (context) => [
-                              PopupMenuItem(
-                                child: const Text('Editar'),
-                                onTap: () => _editEntry(entry),
-                              ),
-                              PopupMenuItem(
-                                child: const Text('Deletar'),
-                                onTap: () => _deleteEntry(entry.id!),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
                       const SizedBox(height: 8),
                       Text(
                         entry.content,
@@ -155,6 +118,12 @@ class _DiaryScreenState extends State<DiaryScreen> {
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
+                      const SizedBox(height: 8),
+                      if (entry.mediaPaths != null && entry.mediaPaths!.isNotEmpty)
+                        Text(
+                          '📷 ${entry.mediaPaths!.length} arquivo(s)',
+                          style: const TextStyle(fontSize: 12, color: Colors.blue),
+                        ),
                       const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -178,6 +147,19 @@ class _DiaryScreenState extends State<DiaryScreen> {
                       ),
                     ],
                   ),
+                  trailing: PopupMenuButton(
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                        onTap: () => _editEntry(entry),
+                        child: const Text('Editar'),
+                      ),
+                      PopupMenuItem(
+                        onTap: () => _deleteEntry(entry.id!),
+                        child: const Text('Deletar'),
+                      ),
+                    ],
+                  ),
+                  onTap: () => _editEntry(entry),
                 ),
               );
             },
@@ -194,7 +176,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
 
 class _DiaryEditorScreen extends StatefulWidget {
   final DiaryEntry? entry;
-  final Function(String, String, List<String>?) onSave;
+  final Function(String, String, List<String>?, List<String>?) onSave;
 
   const _DiaryEditorScreen({
     this.entry,
@@ -209,6 +191,8 @@ class _DiaryEditorScreenState extends State<_DiaryEditorScreen> {
   late TextEditingController _titleController;
   late TextEditingController _contentController;
   late TextEditingController _tagsController;
+  List<String> _mediaPaths = [];
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
@@ -218,6 +202,7 @@ class _DiaryEditorScreenState extends State<_DiaryEditorScreen> {
     _tagsController = TextEditingController(
       text: widget.entry?.tags?.join(', ') ?? '',
     );
+    _mediaPaths = widget.entry?.mediaPaths ?? [];
   }
 
   @override
@@ -226,6 +211,42 @@ class _DiaryEditorScreenState extends State<_DiaryEditorScreen> {
     _contentController.dispose();
     _tagsController.dispose();
     super.dispose();
+  }
+
+  Future<void> _pickImage() async {
+    try {
+      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        setState(() {
+          _mediaPaths.add(image.path);
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao selecionar imagem: $e')),
+      );
+    }
+  }
+
+  Future<void> _pickVideo() async {
+    try {
+      final XFile? video = await _picker.pickVideo(source: ImageSource.gallery);
+      if (video != null) {
+        setState(() {
+          _mediaPaths.add(video.path);
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao selecionar vídeo: $e')),
+      );
+    }
+  }
+
+  void _removeMedia(int index) {
+    setState(() {
+      _mediaPaths.removeAt(index);
+    });
   }
 
   @override
@@ -250,6 +271,7 @@ class _DiaryEditorScreenState extends State<_DiaryEditorScreen> {
                   _titleController.text,
                   _contentController.text,
                   tags.isEmpty ? null : tags,
+                  _mediaPaths.isEmpty ? null : _mediaPaths,
                 );
                 Navigator.pop(context);
               }
@@ -288,6 +310,91 @@ class _DiaryEditorScreenState extends State<_DiaryEditorScreen> {
                 border: OutlineInputBorder(),
               ),
             ),
+            const SizedBox(height: 24),
+            // Seção de Mídia
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: _pickImage,
+                  icon: const Icon(Icons.image),
+                  label: const Text('Adicionar Foto'),
+                ),
+                ElevatedButton.icon(
+                  onPressed: _pickVideo,
+                  icon: const Icon(Icons.videocam),
+                  label: const Text('Adicionar Vídeo'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            // Exibição de Mídia Selecionada
+            if (_mediaPaths.isNotEmpty)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Mídia Selecionada (${_mediaPaths.length})',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 12),
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      spacing: 8,
+                      mainAxisSpacing: 8,
+                    ),
+                    itemCount: _mediaPaths.length,
+                    itemBuilder: (context, index) {
+                      final path = _mediaPaths[index];
+                      final isVideo = path.toLowerCase().endsWith('.mp4') ||
+                          path.toLowerCase().endsWith('.mov') ||
+                          path.toLowerCase().endsWith('.avi') ||
+                          path.toLowerCase().endsWith('.mkv');
+
+                      return Stack(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: Colors.grey[300],
+                            ),
+                            child: isVideo
+                                ? const Center(
+                                    child: Icon(Icons.videocam, size: 40),
+                                  )
+                                : Image.file(
+                                    File(path),
+                                    fit: BoxFit.cover,
+                                  ),
+                          ),
+                          Positioned(
+                            top: 4,
+                            right: 4,
+                            child: GestureDetector(
+                              onTap: () => _removeMedia(index),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                padding: const EdgeInsets.all(4),
+                                child: const Icon(
+                                  Icons.close,
+                                  color: Colors.white,
+                                  size: 16,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ],
+              ),
           ],
         ),
       ),
