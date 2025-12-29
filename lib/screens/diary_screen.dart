@@ -343,7 +343,7 @@ class _DiaryEditorScreenState extends State<_DiaryEditorScreen> {
                     physics: const NeverScrollableScrollPhysics(),
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
-                      spacing: 8,
+                      crossAxisSpacing: 8,
                       mainAxisSpacing: 8,
                     ),
                     itemCount: _mediaPaths.length,
