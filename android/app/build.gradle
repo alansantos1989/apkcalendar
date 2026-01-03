@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.alansantos.lifeplanner.life_planner_app"
-    compileSdk = 34
+    compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
