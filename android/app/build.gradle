@@ -37,6 +37,13 @@ android {
             signingConfig = signingConfigs.debug
         }
     }
+
+    // Exclude flutter_plugin_android_lifecycle to avoid Android SDK 35 requirement
+    configurations {
+        implementation {
+            exclude group: 'io.flutter.plugins.flutter_plugin_android_lifecycle'
+        }
+    }
 }
 
 flutter {
