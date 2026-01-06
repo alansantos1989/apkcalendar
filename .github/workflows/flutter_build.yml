@@ -34,6 +34,9 @@ jobs:
       - name: Clean Flutter cache
         run: flutter clean && flutter pub cache clean --force
 
+      - name: Clear Gradle cache
+        run: rm -rf ~/.gradle/caches
+
       - name: Get dependencies
         run: flutter pub get
 
