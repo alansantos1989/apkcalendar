@@ -7,18 +7,7 @@ allprojects {
     }
 }
 
-subprojects {
-    configurations.all {
-        resolutionStrategy {
-            // Force Kotlin 1.7.20 for all dependencies
-            force 'org.jetbrains.kotlin:kotlin-stdlib:1.7.20'
-            force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20'
-            force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.20'
-            force 'org.jetbrains.kotlin:kotlin-reflect:1.7.20'
-            force 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20'
-        }
-    }
-}
+
 
 ext {
     kotlin_version = '1.7.20'
